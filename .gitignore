@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+
+# Build Output
+dist/
+build/
+
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage
+coverage/
+
+# Cache
+.cache/
+.eslintcache
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Temporary Files
+tmp/
+temp/
+
+# Swagger Generated Files (if any)
+swagger-output.json
+
+# Docker
+docker-compose.override.yml
+
+# Testing
+jest-results/
