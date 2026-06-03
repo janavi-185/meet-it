@@ -6,7 +6,8 @@ const pool = new Pool({
   ssl: env.nodeEnv === "production" ? { rejectUnauthorized: false } : false,
 });
 
-export const query = (text: string, params?: unknown[]) => pool.query(text, params);
+export const query = (text: string, params?: unknown[]) =>
+  pool.query(text, params);
 
 export const testConnection = async () => {
   try {

@@ -66,4 +66,3 @@ export class AuthService {
     return result.rows[0] || null;
   }
 }
-
