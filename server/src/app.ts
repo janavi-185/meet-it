@@ -7,10 +7,16 @@ import { authRoutes } from "./modules/auth/auth.routes.js";
 import { meetingRoutes } from "./modules/meetings/meeting.routes.js";
 import { analysisRoutes } from "./modules/analysis/analysis.routes.js";
 import { actionItemRoutes } from "./modules/action-items/actionItem.routes.js";
+import { evaluationRoutes } from "./modules/evaluation/evaluation.routes.js";
+import { errorHandler } from "./middleware/error.middleware.js";
+import { traceMiddleware } from "./middleware/trace.middleware.js";
+import { globalLimiter, authLimiter, aiLimiter } from "./config/ratelimiter.js";
 
 const app = express();
 
 // Middlewares
+app.use(traceMiddleware);
+app.use(globalLimiter);
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
@@ -19,10 +25,12 @@ app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/meetings", meetingRoutes);
+app.use("/api/meetings/:id/analyze", aiLimiter);
 app.use("/api/meetings", analysisRoutes);
 app.use("/api/action-items", actionItemRoutes);
+app.use("/api/evaluation", evaluationRoutes);
 
 app.get("/", (req, res) => {
   res.send(
@@ -39,5 +47,8 @@ app.get("/health", (req, res) => {
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
 });
+
+// Global Error Handler
+app.use(errorHandler);
 
 export default app;
