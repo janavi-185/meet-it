@@ -17,16 +17,13 @@ export class AuthService {
   async register(input: CreateUserInput): Promise<void> {
     const { name, email, password } = input;
 
-    // Check if user already exists
     const existingUser = await this.findByEmail(email);
     if (existingUser) {
       throw new Error("User with this email already exists");
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password!, 10);
 
-    // Insert user into DB
     const sql = `
       INSERT INTO users (name, email, password)
       VALUES ($1, $2, $3)
