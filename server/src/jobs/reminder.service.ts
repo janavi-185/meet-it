@@ -1,5 +1,4 @@
 import { query } from "../config/db.js";
-import { env } from "../config/env.js";
 import { ActionItemService } from "../modules/action-items/actionItem.service.js";
 import { MeetingService } from "../modules/meetings/meeting.service.js";
 import { sendReminderEmail } from "../reminders/email.service.js";
@@ -82,31 +81,60 @@ export const processOverdueReminders = async () => {
         meetingTitle: meetingTitle,
       });
 
-      // Send Email
-      if (env.reminderEmail) {
-        const emailSent = await sendReminderEmail(
-          env.reminderEmail,
-          "Overdue Action Item Reminder",
-          message,
+      // Send Email if assignee exists (assumed to be a valid email)
+      if (item.assignee && item.assignee.trim() !== "") {
+        try {
+          const emailSent = await sendReminderEmail(
+            item.assignee,
+            "Overdue Action Item Reminder",
+            message,
+          );
+          await saveHistory({
+            actionItemId: item.id,
+            channel: "EMAIL",
+            recipient: item.assignee,
+            message,
+            status: emailSent ? "SENT" : "FAILED",
+          });
+        } catch (emailError) {
+          console.error(
+            `Failed to send email to ${item.assignee}:`,
+            emailError,
+          );
+          await saveHistory({
+            actionItemId: item.id,
+            channel: "EMAIL",
+            recipient: item.assignee,
+            message,
+            status: "FAILED",
+          });
+        }
+      } else {
+        console.warn(
+          `Skipping email for action item ${item.id}: No assignee email found.`,
         );
-        await saveHistory({
-          actionItemId: item.id,
-          channel: "EMAIL",
-          recipient: env.reminderEmail,
-          message,
-          status: emailSent ? "SENT" : "FAILED",
-        });
       }
 
       // Send Discord
-      const discordSent = await sendDiscordReminder(message);
-      await saveHistory({
-        actionItemId: item.id,
-        channel: "DISCORD",
-        recipient: "Discord Webhook",
-        message,
-        status: discordSent ? "SENT" : "FAILED",
-      });
+      try {
+        const discordSent = await sendDiscordReminder(message);
+        await saveHistory({
+          actionItemId: item.id,
+          channel: "DISCORD",
+          recipient: "Discord Webhook",
+          message,
+          status: discordSent ? "SENT" : "FAILED",
+        });
+      } catch (discordError) {
+        console.error("Failed to send Discord reminder:", discordError);
+        await saveHistory({
+          actionItemId: item.id,
+          channel: "DISCORD",
+          recipient: "Discord Webhook",
+          message,
+          status: "FAILED",
+        });
+      }
     }
   } catch (error) {
     console.error("Critical error in reminder processing:", error);

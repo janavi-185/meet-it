@@ -6,26 +6,26 @@
 
 ---
 
-## 🔗 Live Resources
+## Live Resources
 - **Live API**: [https://meet-it.onrender.com](https://meet-it.onrender.com)
 - **Interactive Swagger Docs**: [https://meet-it.onrender.com/api-docs](https://meet-it.onrender.com/api-docs)
 - **Repository**: [https://github.com/janavi-185/meet-it](https://github.com/janavi-185/meet-it)
 
 ---
 
-## ✨ Core Features
-- **🤖 AI Intelligence**: Automatic extraction of meeting insights with **high-fidelity grounding**.
-- **🔗 Evidence-Based**: Every AI insight includes **citations** (timestamps) linked directly to the transcript.
-- **🔐 Secure Access**: JWT-based authentication with password hashing and session management (Login/Logout).
-- **📅 Action Item Lifecycle**: Track tasks from extraction to completion.
-- **⏰ Smart Reminders**: Automated hourly detection of overdue tasks with notifications.
-- **📢 Multi-Channel Alerts**: Real-time reminders delivered via **Discord Webhooks** and **Email**.
-- **🛡️ Multi-Tier Security**: Granular rate limiting for Global, Auth, and AI endpoints.
-- **🔍 Observability**: Unified error handling with unique **Request Trace IDs** for production debugging.
+## Core Features
+- **AI Intelligence**: Automatic extraction of meeting insights with **high-fidelity grounding**.
+- **Evidence-Based**: Every AI insight includes **citations** (timestamps) linked directly to the transcript.
+- **Secure Access**: JWT-based authentication with password hashing and session management (Login/Logout).
+- **Action Item Lifecycle**: Track tasks from extraction to completion.
+- **Smart Reminders**: Automated hourly detection of overdue tasks with direct assignee notifications.
+- **Multi-Channel Alerts**: Real-time reminders delivered via **Discord Webhooks** and **Email**.
+- **Multi-Tier Security**: Granular rate limiting for Global, Auth, and AI endpoints.
+- **Observability**: Unified error handling with unique **Request Trace IDs** for production debugging.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 - **Backend**: Node.js, Express.js (TypeScript ESM)
 - **Database**: PostgreSQL (Neon Serverless)
 - **AI Engine**: Google Generative AI (Gemini 1.5 Flash)
@@ -36,7 +36,7 @@
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 ```text
 server/
 ├── src/
@@ -57,7 +57,7 @@ server/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Prerequisites
 - **pnpm** (v10+)
@@ -78,7 +78,6 @@ SMTP_PORT=587
 SMTP_USER=your_email@gmail.com
 SMTP_PASS=your_app_password
 SMTP_FROM=your_email@gmail.com
-REMINDER_EMAIL=recipient@example.com
 DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
 ```
 
@@ -96,7 +95,7 @@ pnpm test
 
 ---
 
-## 📖 API Documentation
+## API Documentation
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -113,7 +112,7 @@ pnpm test
 | `PATCH`| `/api/action-items/:id/status`| Update task status (e.g. COMPLETED) |
 | `GET` | `/api/action-items/overdue` | List all overdue action items |
 
-### 🛠️ System
+### System
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `GET` | `/api/evaluation` | Public project & candidate info |
@@ -122,14 +121,14 @@ pnpm test
 
 ---
 
-## 🛡️ Security & Observability
+## Security & Observability
 - **Rate Limiting**: 100 req/15min (Global), 5 req/15min (Auth), 3 req/15min (AI).
 - **Trace IDs**: Every request is assigned a `traceId`. If an error occurs, this ID is logged and returned to the client for easy log correlation.
 - **Global Error Handling**: Catch-all middleware ensures no raw errors are leaked to the client and responses are always uniform.
 
 ---
 
-## 📄 Documentation
+## Documentation
 For deeper dives into our technical choices and strategies, see the `document/` folder:
 - [AI Strategy](./document/AI_APPROACH.md)
 - [Technical Decisions](./document/DECISIONS.md)
