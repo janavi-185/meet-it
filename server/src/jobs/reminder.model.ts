@@ -5,7 +5,7 @@ import { z } from "zod";
  *
  * CREATE TABLE reminder_history (
  *   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
- *   action_item_id UUID NOT NULL REFERENCES action_items(id) ON DELETE CASCADE,
+ *   meeting_id UUID NOT NULL REFERENCES meetings(id) ON DELETE CASCADE,
  *   channel VARCHAR(50) NOT NULL,
  *   recipient VARCHAR(255),
  *   message TEXT NOT NULL,
@@ -22,7 +22,7 @@ export type ReminderStatus = z.infer<typeof ReminderStatusSchema>;
 
 export const ReminderHistorySchema = z.object({
   id: z.string().uuid(),
-  action_item_id: z.string().uuid(),
+  meeting_id: z.string().uuid(),
   channel: ReminderChannelSchema,
   recipient: z.string().nullable(),
   message: z.string(),
@@ -32,7 +32,7 @@ export const ReminderHistorySchema = z.object({
 export type ReminderHistory = z.infer<typeof ReminderHistorySchema>;
 
 export const CreateReminderHistorySchema = z.object({
-  actionItemId: z.string().uuid(),
+  meetingId: z.string().uuid(),
   channel: ReminderChannelSchema,
   recipient: z.string().optional(),
   message: z.string(),

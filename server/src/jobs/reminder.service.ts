@@ -34,16 +34,16 @@ const buildReminderMessage = (payload: {
 const saveHistory = async (
   input: CreateReminderHistoryInput,
 ): Promise<ReminderHistory> => {
-  const { actionItemId, channel, recipient, message, status } = input;
+  const { meetingId, channel, recipient, message, status } = input;
 
   const sql = `
-    INSERT INTO reminder_history (action_item_id, channel, recipient, message, status)
+    INSERT INTO reminder_history (meeting_id, channel, recipient, message, status)
     VALUES ($1, $2, $3, $4, $5)
     RETURNING *
   `;
 
   const result = await query(sql, [
-    actionItemId,
+    meetingId,
     channel,
     recipient || null,
     message,
@@ -90,7 +90,7 @@ export const processOverdueReminders = async () => {
             message,
           );
           await saveHistory({
-            actionItemId: item.id,
+            meetingId: item.meeting_id,
             channel: "EMAIL",
             recipient: item.assignee,
             message,
@@ -102,7 +102,7 @@ export const processOverdueReminders = async () => {
             emailError,
           );
           await saveHistory({
-            actionItemId: item.id,
+            meetingId: item.meeting_id,
             channel: "EMAIL",
             recipient: item.assignee,
             message,
@@ -119,7 +119,7 @@ export const processOverdueReminders = async () => {
       try {
         const discordSent = await sendDiscordReminder(message);
         await saveHistory({
-          actionItemId: item.id,
+          meetingId: item.meeting_id,
           channel: "DISCORD",
           recipient: "Discord Webhook",
           message,
@@ -128,7 +128,7 @@ export const processOverdueReminders = async () => {
       } catch (discordError) {
         console.error("Failed to send Discord reminder:", discordError);
         await saveHistory({
-          actionItemId: item.id,
+          meetingId: item.meeting_id,
           channel: "DISCORD",
           recipient: "Discord Webhook",
           message,
