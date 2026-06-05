@@ -421,6 +421,37 @@ const options: swaggerJsdoc.Options = {
           },
         },
       },
+      "/api/evaluation": {
+        get: {
+          summary: "Get evaluation details",
+          tags: ["Evaluation"],
+          responses: {
+            200: {
+              description: "Evaluation details retrieved successfully",
+              content: {
+                "application/json": {
+                  example: {
+                    candidateName: "Janavi Chauhan",
+                    email: "chauhanjanavi06@gmail.com",
+                    repositoryUrl: "https://github.com/janavi-185/meet-it",
+                    deployedUrl: "https://meet-it.onrender.com",
+                    externalIntegration:
+                      "Gemini AI, Discord Webhook, Nodemailer",
+                    features: [
+                      "Authentication (JWT with Logout)",
+                      "AI Meeting Analysis (Gemini)",
+                      "Action Item Management",
+                      "Automated Overdue Reminders (Cron)",
+                      "Discord & Email Notifications",
+                      "Swagger API Documentation",
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
   },
   apis: [],

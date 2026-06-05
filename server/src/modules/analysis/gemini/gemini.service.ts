@@ -17,11 +17,14 @@ export class GeminiService {
       throw new Error("GEMINI_API_KEY is not defined in environment variables");
     }
     this.genAI = new GoogleGenerativeAI(env.geminiApiKey);
-    // Using gemini-1.5-flash as 2.5 is not yet available; assuming typo or future-proofing
-    this.model = this.genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-      generationConfig: { responseMimeType: "application/json" },
-    });
+    // Using gemini-1.5-flash as the default stable model via env
+    this.model = this.genAI.getGenerativeModel(
+      {
+        model: env.geminiModel,
+        generationConfig: { responseMimeType: "application/json" },
+      },
+      { apiVersion: "v1" },
+    );
   }
 
   async generateAnalysis(prompt: string): Promise<AnalysisResponse> {

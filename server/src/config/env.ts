@@ -14,6 +14,7 @@ export const env = {
   jwtSecret: process.env.JWT_SECRET || "your_jwt_secret",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "1d",
   geminiApiKey: process.env.GEMINI_API_KEY,
+  geminiModel: process.env.GEMINI_MODEL || "gemini-1.5-flash",
   smtp: {
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || "587"),
