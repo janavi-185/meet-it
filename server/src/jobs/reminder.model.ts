@@ -1,19 +1,5 @@
 import { z } from "zod";
 
-/**
- * SQL Schema for reminder_history:
- *
- * CREATE TABLE reminder_history (
- *   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
- *   meeting_id UUID NOT NULL REFERENCES meetings(id) ON DELETE CASCADE,
- *   channel VARCHAR(50) NOT NULL,
- *   recipient VARCHAR(255),
- *   message TEXT NOT NULL,
- *   sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
- *   status VARCHAR(30) DEFAULT 'SENT'
- * );
- */
-
 export const ReminderChannelSchema = z.enum(["EMAIL", "DISCORD"]);
 export type ReminderChannel = z.infer<typeof ReminderChannelSchema>;
 

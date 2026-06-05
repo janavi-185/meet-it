@@ -18,13 +18,10 @@ export class GeminiService {
     }
     this.genAI = new GoogleGenerativeAI(env.geminiApiKey);
     // Using gemini-1.5-flash as the default stable model via env
-    this.model = this.genAI.getGenerativeModel(
-      {
-        model: env.geminiModel,
-        generationConfig: { responseMimeType: "application/json" },
-      },
-      { apiVersion: "v1" },
-    );
+    this.model = this.genAI.getGenerativeModel({
+      model: env.geminiModel,
+    });
+    console.log("Gemini Model:", env.geminiModel);
   }
 
   async generateAnalysis(prompt: string): Promise<AnalysisResponse> {

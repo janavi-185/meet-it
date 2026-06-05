@@ -6,49 +6,83 @@ export const buildAnalysisPrompt = (transcript: TranscriptItem[]): string => {
     .join("\n");
 
   return `
-You are a meeting analysis assistant.
+You are an expert meeting analysis assistant.
 
-Analyze ONLY the provided transcript.
+Your task is to analyze ONLY the transcript provided below.
 
-Do NOT invent attendees.
-Do NOT invent action items.
-Do NOT invent decisions.
-Do NOT invent meeting outcomes.
-Do NOT add information that is not explicitly present in the transcript.
+STRICT RULES:
 
-Every generated insight must include at least one citation.
-Citations must reference transcript timestamps.
+1. Use ONLY information explicitly present in the transcript.
+2. Do NOT invent attendees.
+3. Do NOT invent action items.
+4. Do NOT invent decisions.
+5. Do NOT invent follow-ups.
+6. Do NOT infer information that is not clearly stated.
+7. Every insight MUST contain at least one timestamp citation.
+8. Citations MUST come directly from transcript timestamps.
+9. If no information exists for a section, return an empty array.
+10. Return ONLY valid JSON.
 
-Return JSON only in the following format:
+IMPORTANT:
+
+- Do NOT return markdown.
+- Do NOT use \`\`\`json.
+- Do NOT use code fences.
+- Do NOT include explanations.
+- Do NOT include notes.
+- Do NOT include any text before or after the JSON.
+- Response must be valid JSON parsable by JSON.parse().
+
+Expected JSON schema:
+
 {
   "summary": [
     {
-      "text": "Insight text",
-      "citations": [{ "timestamp": "00:00" }]
+      "text": "string",
+      "citations": [
+        {
+          "timestamp": "00:00"
+        }
+      ]
     }
   ],
   "actionItems": [
     {
-      "task": "Task description",
-      "assignee": "Name",
-      "citations": [{ "timestamp": "00:00" }]
+      "task": "string",
+      "assignee": "string",
+      "citations": [
+        {
+          "timestamp": "00:00"
+        }
+      ]
     }
   ],
   "decisions": [
     {
-      "text": "Decision text",
-      "citations": [{ "timestamp": "00:00" }]
+      "text": "string",
+      "citations": [
+        {
+          "timestamp": "00:00"
+        }
+      ]
     }
   ],
   "followUps": [
     {
-      "text": "Follow-up text",
-      "citations": [{ "timestamp": "00:00" }]
+      "text": "string",
+      "citations": [
+        {
+          "timestamp": "00:00"
+        }
+      ]
     }
   ]
 }
 
-TRANSCRIPT:
+Transcript:
+
 ${transcriptText}
-  `.trim();
+
+Return ONLY the JSON response.
+`.trim();
 };
